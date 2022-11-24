@@ -67,14 +67,15 @@ public class ExposurePointFeature extends CameraFeature<Point> {
     return supportedRegions != null && supportedRegions > 0;
   }
 
-  @Override
+ @Override
   public void updateBuilder(CaptureRequest.Builder requestBuilder) {
     if (!checkIsSupported()) {
       return;
     }
-    requestBuilder.set(
-        CaptureRequest.CONTROL_AE_REGIONS,
-        exposureRectangle == null ? null : new MeteringRectangle[] {exposureRectangle});
+    if (exposureRectangle == null) {
+      return;
+    }
+    requestBuilder.set(CaptureRequest.CONTROL_AE_REGIONS, new MeteringRectangle[] {exposureRectangle});
   }
 
   private void buildExposureRectangle() {
